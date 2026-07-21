@@ -20,7 +20,13 @@ This project is an all-in-one Business Intelligence Bot, which can automate a lo
 
 ### Fetch Stock Agent
 
-This agent fetches data from Google Sheet, and returns the stock quantity of the requested product. The agent h
+This agent fetches data from Google Sheet, and returns the stock quantity of the requested product. The agent calls the following tool:
+1. get_sheets_data: This tool can access the Google Sheet containing the stock data, and read data from it
+
+### Quotation Agent
+
+This agent can generate quotations for multiple services (like flooring, paint etc). The user can provide the dimensoins of the area in either the text itself, or an image of a technical drawing. The agent returns the HTML code for generating the quotation. The agent has access to the following tools:
+1. get_price_data: This tool can access the Google Sheet containing the per sq meter
 
 
 
