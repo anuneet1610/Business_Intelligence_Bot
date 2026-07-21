@@ -1,34 +1,19 @@
-# %%
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.tools import tool
 from langchain.agents import create_agent
+from langchain_core.messages import HumanMessage
 from dotenv import load_dotenv
 import json
 
 load_dotenv()
 
-# %%
-@tool
-def convert_cm_to_m(distance: int) -> float:
-    '''Converts the distance in centimeters to meters'''
-    return distance/100
-# %%
-@tool
-def calculate_total_cost(length: int, width: int, cost: int) -> float:
-    '''Calculates the total cost of the service, using the length and width parameters, as well as per square meter cost'''
-    return length * width * cost
-# %%
-@tool
-def calculate_grand_total(totals: list[float]) -> float:
-    """Sums a list of item totals to get the grand total."""
-    return sum(totals)
-
-# %%
 from tools.generate_quotation_tool import generate_quotation_pdf
 from tools.get_price_data import get_price_data
-# %%
+from tools.convert_cm_to_m import convert_cm_to_m
+from tools.calculate_total_cost import calculate_total_cost
+from tools.calculate_grand_total import calculate_grand_total
+
 llm = ChatGoogleGenerativeAI(model="gemma-4-31b-it")
-# %%
+
 system_prompt=(
     "You are a helpful quotation generation assistant. The user may ask for a quotation "
     "for one or more services. For each service mentioned, extract its name. If the user provided an image, extract the length "
@@ -47,12 +32,8 @@ quotation_agent = create_agent(
     tools=[get_price_data, convert_cm_to_m, calculate_total_cost, generate_quotation_pdf, calculate_grand_total],
     system_prompt=system_prompt,
 )
-# %%
 
-# %%
 
-# %%
-from langchain_core.messages import HumanMessage
 
 def ask(message: str, image_base64: str | None = None):
 
